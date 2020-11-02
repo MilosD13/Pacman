@@ -2,6 +2,7 @@ const width = 28;
 const grid = document.querySelector(".grid");
 const scoreDisplay = document.getElementById("score");
 let squares = [];
+let score = 0;
 
 // 0 - pacdots
 // 1 - wall
@@ -798,22 +799,32 @@ const layout = [
 
 //create board
 function createBoard() {
+  //for loop
   for (let i = 0; i < layout.length; i++) {
+    //create a square
     const square = document.createElement("div");
+    //put square in grid
     grid.appendChild(square);
+    //put square in squares array
     squares.push(square);
-    console.log(squares);
 
     if (layout[i] === 0) {
       squares[i].classList.add("pac-dot");
     } else if (layout[i] === 1) {
       squares[i].classList.add("wall");
+    } else if (layout[i] === 2) {
+      squares[i].classList.add("ghost-lair");
     } else if (layout[i] === 3) {
       squares[i].classList.add("power-pellet");
     }
   }
 }
 createBoard();
+
+// down - 40
+// up key - 38
+// left - 37
+// right - 39
 
 //starting position of pacman
 let pacmanCurrentIndex = 490;
@@ -866,5 +877,14 @@ function control(e) {
       break;
   }
   squares[pacmanCurrentIndex].classList.add("pacman");
+  pacDotEaten();
 }
 document.addEventListener("keyup", control);
+
+function pacDotEaten() {
+  if (squares[pacmanCurrentIndex].classList.contains("pac-dot")) {
+    squares[pacmanCurrentIndex].classList.remove("pac-dot");
+    score++;
+    scoreDisplay.innerHTML = score;
+  }
+}
